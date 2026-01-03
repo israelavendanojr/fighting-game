@@ -26,7 +26,7 @@ public class InputHistoryDisplay : MonoBehaviour
         { BufferInput.Medium, "M" },
         { BufferInput.Heavy, "H" },
         { BufferInput.Dash, "D" },
-        { BufferInput.Neutral, "X" }
+        { BufferInput.Neutral, "-" }
     };
     
     private void Update()

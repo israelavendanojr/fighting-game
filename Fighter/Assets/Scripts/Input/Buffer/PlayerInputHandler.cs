@@ -1,7 +1,7 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
 public class PlayerInputHandler : MonoBehaviour
 {
     [SerializeField] private int _playerIndex; // 0 for P1, 1 for P2
@@ -47,8 +47,8 @@ public class PlayerInputHandler : MonoBehaviour
         
         _dashAction.performed += ctx => OnButtonPressed(BufferInput.Dash);
         _dashAction.canceled += ctx => OnButtonReleased(BufferInput.Dash);
-
     }
+    
     private void Update()
     {
         // Update directional input
@@ -69,28 +69,43 @@ public class PlayerInputHandler : MonoBehaviour
         bool up = _currentMoveInput.y > 0.5f;
         bool down = _currentMoveInput.y < -0.5f;
         
+        // Check for neutral: no directional input OR opposing directions cancel out
+        bool horizontalNeutral = (!left && !right) || (left && right);
+        bool verticalNeutral = (!up && !down) || (up && down);
+        bool isNeutral = horizontalNeutral && verticalNeutral;
+        
+        // Neutral state
+        if (isNeutral && !_inputBuffer.IsInputHeld(BufferInput.Neutral))
+        {
+            _inputBuffer.OnInputPressed(BufferInput.Neutral);
+        }
+        else if (!isNeutral && _inputBuffer.IsInputHeld(BufferInput.Neutral))
+        {
+            _inputBuffer.OnInputReleased(BufferInput.Neutral);
+        }
+        
         // Left
-        if (left && !_inputBuffer.IsInputHeld(BufferInput.Left))
+        if (left && !right && !_inputBuffer.IsInputHeld(BufferInput.Left))
             _inputBuffer.OnInputPressed(BufferInput.Left);
-        else if (!left && _inputBuffer.IsInputHeld(BufferInput.Left))
+        else if ((!left || right) && _inputBuffer.IsInputHeld(BufferInput.Left))
             _inputBuffer.OnInputReleased(BufferInput.Left);
         
         // Right
-        if (right && !_inputBuffer.IsInputHeld(BufferInput.Right))
+        if (right && !left && !_inputBuffer.IsInputHeld(BufferInput.Right))
             _inputBuffer.OnInputPressed(BufferInput.Right);
-        else if (!right && _inputBuffer.IsInputHeld(BufferInput.Right))
+        else if ((!right || left) && _inputBuffer.IsInputHeld(BufferInput.Right))
             _inputBuffer.OnInputReleased(BufferInput.Right);
         
         // Up
-        if (up && !_inputBuffer.IsInputHeld(BufferInput.Up))
+        if (up && !down && !_inputBuffer.IsInputHeld(BufferInput.Up))
             _inputBuffer.OnInputPressed(BufferInput.Up);
-        else if (!up && _inputBuffer.IsInputHeld(BufferInput.Up))
+        else if ((!up || down) && _inputBuffer.IsInputHeld(BufferInput.Up))
             _inputBuffer.OnInputReleased(BufferInput.Up);
         
         // Down
-        if (down && !_inputBuffer.IsInputHeld(BufferInput.Down))
+        if (down && !up && !_inputBuffer.IsInputHeld(BufferInput.Down))
             _inputBuffer.OnInputPressed(BufferInput.Down);
-        else if (!down && _inputBuffer.IsInputHeld(BufferInput.Down))
+        else if ((!down || up) && _inputBuffer.IsInputHeld(BufferInput.Down))
             _inputBuffer.OnInputReleased(BufferInput.Down);
     }
     
