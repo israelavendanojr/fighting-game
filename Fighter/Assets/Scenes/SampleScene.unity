@@ -836,7 +836,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputHandler: {fileID: 1367992951}
   _historyText: {fileID: 1710205381}
-  _maxDisplayedInputs: 15
+  _maxDisplayedInputs: 60
   _showFrames: 1
   _combineSimultaneousInputs: 1
   _simultaneousInputFrameWindow: 2
@@ -860,10 +860,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u2190\u2193\u2192\u2191 L M H D"
+  m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1617249197f2af84b83026ed83578a97, type: 2}
+  m_sharedMaterial: {fileID: 3492406382884200487, guid: 1617249197f2af84b83026ed83578a97, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

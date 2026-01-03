@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Linq; // Added for sorting
 using UnityEngine;
 using TMPro;
+
 public class InputHistoryDisplay : MonoBehaviour
 {
     [Header("References")]
@@ -12,36 +14,58 @@ public class InputHistoryDisplay : MonoBehaviour
     [SerializeField] private int _maxDisplayedInputs = 15;
     [SerializeField] private bool _showFrames = true;
     [SerializeField] private bool _combineSimultaneousInputs = true;
-    [SerializeField] private int _simultaneousInputFrameWindow = 2; // 2 frames window for "simultaneous"
+    [SerializeField] private int _simultaneousInputFrameWindow = 2;
     
     private StringBuilder _stringBuilder = new StringBuilder();
-    
-    private Dictionary<BufferInput, string> _inputSymbols = new Dictionary<BufferInput, string>()
+    private Dictionary<BufferInput, string> _inputSymbols;
+
+    private void Awake()
     {
-        { BufferInput.Left, "←" },
-        { BufferInput.Down, "↓" },
-        { BufferInput.Right, "→" },
-        { BufferInput.Up, "↑" },
-        { BufferInput.Light, "L" },
-        { BufferInput.Medium, "M" },
-        { BufferInput.Heavy, "H" },
-        { BufferInput.Dash, "D" },
-        { BufferInput.Neutral, "-" }
-    };
-    
-    private void Update()
-    {
-        UpdateDisplay();
+        InitializeDictionary();
     }
+
+    private void InitializeDictionary()
+    {
+        // Initialize if null, otherwise just clear it
+        if (_inputSymbols == null)
+        {
+            _inputSymbols = new Dictionary<BufferInput, string>();
+        }
+        else
+        {
+            _inputSymbols.Clear();
+        }
+
+        // Using the indexer [] instead of .Add() prevents the "Key already added" crash
+        _inputSymbols[BufferInput.DownBack] = "↙";
+        _inputSymbols[BufferInput.Down] = "↓";
+        _inputSymbols[BufferInput.DownForward] = "↘";
+        _inputSymbols[BufferInput.Back] = "←";
+        _inputSymbols[BufferInput.Neutral] = "-";
+        _inputSymbols[BufferInput.Forward] = "→";
+        _inputSymbols[BufferInput.UpBack] = "↖";
+        _inputSymbols[BufferInput.Up] = "↑";
+        _inputSymbols[BufferInput.UpForward] = "↗";
+        
+        // Actions matching your .inputactions file
+        _inputSymbols[BufferInput.Light] = "L";   // Action: Light [cite: 3]
+        _inputSymbols[BufferInput.Medium] = "M";  // Action: Medium [cite: 5]
+        _inputSymbols[BufferInput.Heavy] = "H";   // Action: Heavy [cite: 7]
+        _inputSymbols[BufferInput.Dash] = "D";    // Action: Dash [cite: 9]
+        _inputSymbols[BufferInput.Throw] = "T";   // Action: Throw [cite: 11]
+    }
+
+    private void Update() => UpdateDisplay();
     
     private void UpdateDisplay()
     {
-        if (_inputHandler == null || _historyText == null)
+        if (_inputHandler == null || _historyText == null || _inputSymbols == null)
             return;
         
+        if (_inputHandler.InputBuffer == null) return;
         var history = _inputHandler.InputBuffer.GetInputHistory();
         
-        if (history.Count == 0)
+        if (history == null || history.Count == 0)
         {
             _historyText.text = "";
             return;
@@ -50,17 +74,13 @@ public class InputHistoryDisplay : MonoBehaviour
         _stringBuilder.Clear();
         
         if (_combineSimultaneousInputs)
-        {
             DisplayCombinedInputs(history);
-        }
         else
-        {
             DisplayIndividualInputs(history);
-        }
         
         _historyText.text = _stringBuilder.ToString();
     }
-    
+
     private void DisplayIndividualInputs(List<InputEvent> history)
     {
         int displayCount = Mathf.Min(_maxDisplayedInputs, history.Count);
@@ -68,22 +88,11 @@ public class InputHistoryDisplay : MonoBehaviour
         
         for (int i = startIndex; i < history.Count; i++)
         {
-            var inputEvent = history[i];
-            
-            if (_showFrames)
-            {
-                int framesHeld = inputEvent.HeldFrames;
-                _stringBuilder.Append($"{_inputSymbols[inputEvent.Input]} ({framesHeld}f)");
-            }
-            else
-            {
-                _stringBuilder.Append(_inputSymbols[inputEvent.Input]);
-            }
-            
+            AppendInputEventString(history[i]);
             _stringBuilder.AppendLine();
         }
     }
-    
+
     private void DisplayCombinedInputs(List<InputEvent> history)
     {
         List<List<InputEvent>> groupedInputs = GroupSimultaneousInputs(history);
@@ -95,33 +104,49 @@ public class InputHistoryDisplay : MonoBehaviour
         {
             var group = groupedInputs[i];
             
-            foreach (var inputEvent in group)
+            // Sort group: Directions first, then buttons
+            // (Assuming BufferInput enum has directions as lower values)
+            var sortedGroup = group.OrderBy(e => (int)e.Input).ToList();
+
+            foreach (var inputEvent in sortedGroup)
             {
-                _stringBuilder.Append(_inputSymbols[inputEvent.Input]);
+                _stringBuilder.Append(GetSymbol(inputEvent.Input));
             }
             
             if (_showFrames && group.Count > 0)
             {
-                int framesHeld = group[0].HeldFrames;
-                _stringBuilder.Append($" ({framesHeld}f)");
+                _stringBuilder.Append($" ({group[0].HeldFrames}f)");
             }
             
             _stringBuilder.AppendLine();
         }
     }
-    
+
+    private void AppendInputEventString(InputEvent inputEvent)
+    {
+        string symbol = GetSymbol(inputEvent.Input);
+        if (_showFrames)
+            _stringBuilder.Append($"{symbol} ({inputEvent.HeldFrames}f)");
+        else
+            _stringBuilder.Append(symbol);
+    }
+
+    private string GetSymbol(BufferInput input)
+    {
+        return _inputSymbols.TryGetValue(input, out string s) ? s : ((int)input).ToString();
+    }
+
     private List<List<InputEvent>> GroupSimultaneousInputs(List<InputEvent> history)
     {
         var grouped = new List<List<InputEvent>>();
-        
-        if (history.Count == 0)
-            return grouped;
+        if (history.Count == 0) return grouped;
         
         var currentGroup = new List<InputEvent> { history[0] };
         
         for (int i = 1; i < history.Count; i++)
         {
-            int frameDiff = history[i].FramePressed - currentGroup[0].FramePressed;
+            // Calculate frame difference
+            int frameDiff = Mathf.Abs(history[i].FramePressed - currentGroup[0].FramePressed);
             
             if (frameDiff <= _simultaneousInputFrameWindow)
             {
@@ -134,18 +159,12 @@ public class InputHistoryDisplay : MonoBehaviour
             }
         }
         
-        if (currentGroup.Count > 0)
-        {
-            grouped.Add(currentGroup);
-        }
-        
+        if (currentGroup.Count > 0) grouped.Add(currentGroup);
         return grouped;
     }
-    
+
     public void ClearDisplay()
     {
-        if (_historyText != null)
-            _historyText.text = "";
+        if (_historyText != null) _historyText.text = "";
     }
 }
-

@@ -12,10 +12,9 @@ public enum BufferInput
     DownBack = 1,
     
     // Buttons
-    Light,
-    Medium,
-    Heavy,
-    Dash,
-    Throw
-
-}   
+    Light = 100,
+    Medium = 101,
+    Heavy = 102,
+    Dash = 103,
+    Throw = 104
+}
