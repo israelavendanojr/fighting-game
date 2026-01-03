@@ -1,6 +1,6 @@
 public enum BufferInput
 {
-    None,
+    Neutral,
     Left,
     Right,
     Up,
