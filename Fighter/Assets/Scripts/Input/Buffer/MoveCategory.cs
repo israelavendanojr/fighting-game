@@ -1,9 +1,8 @@
 public enum MoveCategory
 {
     Movement,      // Walk, dash, jump
-    Normal,        // 5L, 2M, 5H, etc.
-    CommandNormal, // 6H, 3M, etc.
-    Special,       // 236L, 623H, etc.
+    Normal,        // 5L, 2M, 6H, etc.
+    Special,       // 236L, [4]6M, 214H, etc.
     Super,         // 236236H, 214214L, etc.
     Throw,         // Throws
     Universal      // System mechanics
