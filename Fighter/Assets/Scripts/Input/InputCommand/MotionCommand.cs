@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Input Commands/Motion (Special/Super)", fileName = "MOT_")]
+[CreateAssetMenu(menuName = "Input Commands/Motion", fileName = "MOT_")]
 public class MotionCommand : InputCommand
 {
     [Header("Motion Sequence (Numpad Notation)")]

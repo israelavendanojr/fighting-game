@@ -95,8 +95,8 @@ public class PlayerInputHandler : MonoBehaviour
     private BufferInput DetermineNumpadDirection(bool left, bool right, bool up, bool down)
     {
         // Cancel opposing directions
-        if (left && right) { left = false; right = false; }
-        if (up && down) { up = false; down = false; }
+        // if (left && right) { left = false; right = false; }
+        // if (up && down) { up = false; down = false; }
         
         // Numpad mapping (7 8 9 / 4 5 6 / 1 2 3)
         if (up)

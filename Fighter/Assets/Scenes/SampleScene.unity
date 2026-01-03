@@ -638,6 +638,7 @@ GameObject:
   - component: {fileID: 1367992953}
   - component: {fileID: 1367992952}
   - component: {fileID: 1367992951}
+  - component: {fileID: 1367992954}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -783,6 +784,20 @@ MonoBehaviour:
   _forwardWalkData: {fileID: 11400000, guid: 1bfe4fb2304d3504e802d6c17b8502b9, type: 2}
   _backDashData: {fileID: 0}
   _forwardDashData: {fileID: 0}
+--- !u!114 &1367992954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367992946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a87dd35c72942c459eb52f80366776a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Commands: []
+  FacingDirection: 1
 --- !u!1 &1710205378
 GameObject:
   m_ObjectHideFlags: 0
