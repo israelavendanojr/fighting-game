@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: MOT_
   m_EditorClassIdentifier: 
   CommandName: 
-  Category: 1
+  Category: 0
   Priority: 10
   ClearsBuffer: 0
   BufferWindow: 6
-  Motion: 020000000300000006000000
+  Motion: 
   Button: 100
   MotionWindow: 18
   ButtonWindow: 6
