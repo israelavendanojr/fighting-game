@@ -10,25 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3dc22278307d54642830f6d06b0aba41, type: 3}
-  m_Name: 236L
+  m_Name: 5L
   m_EditorClassIdentifier: 
   inputSequences:
   - steps:
-    - input: 1
-      minimumHoldFrames: 1
-    - input: 2
-      minimumHoldFrames: 1
-    - input: 3
-      minimumHoldFrames: 1
     - input: 9
       minimumHoldFrames: 1
-  - steps:
-    - input: 1
-      minimumHoldFrames: 1
-    - input: 3
-      minimumHoldFrames: 1
-    - input: 9
-      minimumHoldFrames: 1
-  maxFrameWindow: 18
-  clearsBufferOnSuccess: 1
-  priority: 1
+  maxFrameWindow: 6
+  clearsBufferOnSuccess: 0
+  priority: 0

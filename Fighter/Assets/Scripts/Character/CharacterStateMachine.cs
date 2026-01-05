@@ -11,8 +11,9 @@ public class CharacterStateMachine : StateMachine
     public CharacterMoveState HeavyAttackState { get; private set; }
     public CharacterMoveState SpecialOneState { get; private set; }
     public CharacterMoveState SpecialTwoState { get; private set; }
-
-
+    
+    // Expose current state for move checking
+    public State CurrentState => _currentState;
 
     private void Awake()
     {
@@ -23,10 +24,7 @@ public class CharacterStateMachine : StateMachine
         HeavyAttackState = new CharacterMoveState(this);
         SpecialOneState = new CharacterMoveState(this);
         SpecialTwoState = new CharacterMoveState(this);
-
     }
 
     public override State InitialState() => StandState;
 }
-
-

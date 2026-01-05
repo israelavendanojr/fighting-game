@@ -10,19 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00d326ae944aef94cb8f1a188a335f43, type: 3}
-  m_Name: NewCharacterMove
+  m_Name: SpecialOne
   m_EditorClassIdentifier: 
-  commandInput: {fileID: 0}
+  commandInput: {fileID: 11400000, guid: e8aaf39be5daea440adf4ccfccd4bed9, type: 2}
   animationClip: {fileID: 0}
-  startupFrames: 0
-  activeFrames: 0
-  recoveryFrames: 0
-  hitboxes: []
-  hurtboxes: []
+  attacks:
+  - startup: 0
+    active: 0
+    recovery: 0
+    hitStun: 0
+    hitboxes: []
+    hurtboxes: []
   initialVelocity: {x: 0, y: 0}
   velocityOverTime:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

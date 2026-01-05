@@ -11,13 +11,10 @@ public class CharacterMove : ScriptableObject
     
     [Header("Animation")]
     public AnimationClip animationClip;
-    public int startupFrames;
-    public int activeFrames;
-    public int recoveryFrames;
-    
-    [Header("Combat")]
-    public List<Vector2> hitboxes;
-    public List<Vector2> hurtboxes;
+
+    [Header("Attack")]
+    // idea is that all entries will plan after another to allow multihit attacks
+    public AttackData[] attacks;
     
     [Header("Movement")]
     public Vector2 initialVelocity;
@@ -26,4 +23,18 @@ public class CharacterMove : ScriptableObject
     [Header("Cancel Options")]
     public bool specialCancelable = true;
     public bool superCancelable = true;
+}
+
+[System.Serializable]
+public class AttackData
+{
+    [Header("Frame Data")]
+    public int startup;
+    public int active;
+    public int recovery;
+    public int hitStun; 
+    
+    [Header("Boxes")]
+    public List<Vector2> hitboxes;
+    public List<Vector2> hurtboxes;
 }
