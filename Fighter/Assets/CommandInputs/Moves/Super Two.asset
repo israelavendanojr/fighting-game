@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d326ae944aef94cb8f1a188a335f43, type: 3}
   m_Name: Super Two
   m_EditorClassIdentifier: 
-  commandInput: {fileID: 11400000, guid: 3cf8105122d3eb446a64a4956fad31eb, type: 2}
+  commandInput: {fileID: 11400000, guid: 069bb1c376e719045b28521c34698c3e, type: 2}
   animationClip: {fileID: 0}
   attacks:
   - startup: 0
     active: 0
     recovery: 0
     hitStun: 0
+    damage: 10
+    knockback: {x: 5, y: 3}
     hitboxes: []
     hurtboxes: []
   initialVelocity: {x: 0, y: 0}

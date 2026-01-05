@@ -7,13 +7,24 @@ public class CharacterMoveState : CharacterBaseState
     private CharacterMove _moveData;
     private int _currentFrame;
     private int _currentAttackIndex;
+    private BoxManager _boxManager;
+    
+    // Track which phase we're in for proper box management
+    private enum AttackPhase { Startup, Active, Recovery }
+    private AttackPhase _currentPhase;
     
     public CharacterMoveState(CharacterStateMachine characterStateMachine) : base(characterStateMachine)
     {
         _character = characterStateMachine;
+        _boxManager = _character.GetComponent<BoxManager>();
+        
+        // Add BoxManager if it doesn't exist
+        if (_boxManager == null)
+        {
+            _boxManager = _character.gameObject.AddComponent<BoxManager>();
+        }
     }
     
-    // Set the move data when transitioning to this state
     public void SetMoveData(CharacterMove moveData)
     {
         _moveData = moveData;
@@ -32,12 +43,10 @@ public class CharacterMoveState : CharacterBaseState
         
         _currentFrame = 0;
         _currentAttackIndex = 0;
+        _currentPhase = AttackPhase.Startup;
         
-        // Play animation if available
-        // TODO: Play _moveData.animationClip
-        
-        // Apply initial velocity
-        // TODO: Apply _moveData.initialVelocity to character
+        // Clear any existing boxes
+        _boxManager.ClearAllBoxes();
         
         UnityEngine.Debug.Log($"Executing move: {_moveData.name}");
     }
@@ -53,10 +62,10 @@ public class CharacterMoveState : CharacterBaseState
         // Check if we've completed all attacks
         if (_currentAttackIndex >= _moveData.attacks.Length)
         {
-            // Check total frames
             int totalFrames = GetTotalFrames();
             if (_currentFrame >= totalFrames)
             {
+                _boxManager.ClearAllBoxes();
                 _character.SetState(_character.StandState);
                 return;
             }
@@ -64,9 +73,6 @@ public class CharacterMoveState : CharacterBaseState
         
         // Process current attack phase
         ProcessCurrentAttack();
-        
-        // TODO: Check for cancel windows
-        // If in active or recovery frames and move is cancelable, check for new inputs
     }
     
     private void ProcessCurrentAttack()
@@ -79,23 +85,69 @@ public class CharacterMoveState : CharacterBaseState
         
         if (frameInAttack < currentAttack.startup)
         {
-            // Startup phase
-            // TODO: Show hurtboxes, no hitboxes yet
+            // Startup phase - hurtboxes only, no hitboxes
+            if (_currentPhase != AttackPhase.Startup)
+            {
+                _currentPhase = AttackPhase.Startup;
+                _boxManager.ClearAllBoxes();
+                SpawnHurtboxes(currentAttack);
+            }
         }
         else if (frameInAttack < currentAttack.startup + currentAttack.active)
         {
-            // Active phase
-            // TODO: Show both hitboxes and hurtboxes, detect hits
+            // Active phase - both hitboxes and hurtboxes
+            if (_currentPhase != AttackPhase.Active)
+            {
+                _currentPhase = AttackPhase.Active;
+                _boxManager.ClearAllBoxes();
+                SpawnHitboxes(currentAttack);
+                SpawnHurtboxes(currentAttack);
+            }
         }
         else if (frameInAttack < currentAttack.startup + currentAttack.active + currentAttack.recovery)
         {
-            // Recovery phase
-            // TODO: Show hurtboxes, no hitboxes
+            // Recovery phase - hurtboxes only, no hitboxes
+            if (_currentPhase != AttackPhase.Recovery)
+            {
+                _currentPhase = AttackPhase.Recovery;
+                _boxManager.ClearAllBoxes();
+                SpawnHurtboxes(currentAttack);
+            }
         }
         else
         {
             // Move to next attack in sequence
             _currentAttackIndex++;
+            _currentPhase = AttackPhase.Startup;
+            _boxManager.ClearAllBoxes();
+        }
+    }
+    
+    private void SpawnHitboxes(AttackData attack)
+    {
+        if (attack.hitboxes == null) return;
+        
+        foreach (var hitboxData in attack.hitboxes)
+        {
+            _boxManager.CreateHitbox(
+                hitboxData.offset,
+                hitboxData.size,
+                attack.damage,
+                attack.knockback
+            );
+        }
+    }
+    
+    private void SpawnHurtboxes(AttackData attack)
+    {
+        if (attack.hurtboxes == null) return;
+        
+        foreach (var hurtboxData in attack.hurtboxes)
+        {
+            _boxManager.CreateHurtbox(
+                hurtboxData.offset,
+                hurtboxData.size
+            );
         }
     }
     
@@ -124,6 +176,7 @@ public class CharacterMoveState : CharacterBaseState
     public override void Exit()
     {
         base.Exit();
+        _boxManager.ClearAllBoxes();
         _moveData = null;
     }
 }

@@ -34,7 +34,18 @@ public class AttackData
     public int recovery;
     public int hitStun; 
     
+    [Header("Damage")]
+    public int damage = 10;
+    public Vector2 knockback = new Vector2(5f, 3f);
+    
     [Header("Boxes")]
-    public List<Vector2> hitboxes;
-    public List<Vector2> hurtboxes;
+    public BoxData[] hitboxes;
+    public BoxData[] hurtboxes;
+}
+
+[System.Serializable]
+public class BoxData
+{
+    public Vector2 offset;
+    public Vector2 size = new Vector2(1f, 1f);
 }

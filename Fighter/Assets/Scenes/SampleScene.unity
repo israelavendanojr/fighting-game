@@ -798,6 +798,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c83a79ba8bfa3e64b9e957701cf60aed, type: 2}
   - {fileID: 11400000, guid: 2e1a6dc1cc3fc094bacfe181b88a4c2b, type: 2}
   - {fileID: 11400000, guid: 56690c880fc861e448b5890098586508, type: 2}
+  - {fileID: 11400000, guid: 93e17672a165e0641b2b40e84cac98c9, type: 2}
+  - {fileID: 11400000, guid: 4284e40881eb0a742a8d7c26f20cacb2, type: 2}
   _availableMovements:
   - {fileID: 11400000, guid: 04eccb5451da93f4594d66046fdb50f1, type: 2}
   - {fileID: 11400000, guid: 4d51d9df0a0e104428b0efe8f5b8c2ce, type: 2}

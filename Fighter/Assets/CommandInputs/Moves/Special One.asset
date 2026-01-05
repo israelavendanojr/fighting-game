@@ -15,12 +15,18 @@ MonoBehaviour:
   commandInput: {fileID: 11400000, guid: e8aaf39be5daea440adf4ccfccd4bed9, type: 2}
   animationClip: {fileID: 0}
   attacks:
-  - startup: 0
-    active: 0
-    recovery: 0
+  - startup: 7
+    active: 4
+    recovery: 15
     hitStun: 0
-    hitboxes: []
-    hurtboxes: []
+    damage: 10
+    knockback: {x: 5, y: 3}
+    hitboxes:
+    - offset: {x: 1, y: 0.5}
+      size: {x: 3, y: 1}
+    hurtboxes:
+    - offset: {x: 0, y: 0}
+      size: {x: 1, y: 1}
   initialVelocity: {x: 0, y: 0}
   velocityOverTime:
     serializedVersion: 2
