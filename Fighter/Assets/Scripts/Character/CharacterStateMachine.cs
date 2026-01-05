@@ -6,6 +6,11 @@ public class CharacterStateMachine : StateMachine
 {
     // States
     public CharacterStandState StandState { get; private set; }
+    public CharacterMoveState LightAttackState { get; private set; }
+    public CharacterMoveState MediumAttackState { get; private set; }
+    public CharacterMoveState HeavyAttackState { get; private set; }
+    public CharacterMoveState SpecialOneState { get; private set; }
+    public CharacterMoveState SpecialTwoState { get; private set; }
 
 
 
@@ -13,6 +18,11 @@ public class CharacterStateMachine : StateMachine
     {
         // Initialize all states
         StandState = new CharacterStandState(this);
+        LightAttackState = new CharacterMoveState(this);
+        MediumAttackState = new CharacterMoveState(this);
+        HeavyAttackState = new CharacterMoveState(this);
+        SpecialOneState = new CharacterMoveState(this);
+        SpecialTwoState = new CharacterMoveState(this);
 
     }
 

@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using UnityEngine;
 
-public class CharacterAttackState : CharacterBaseState
+public class CharacterMoveState : CharacterBaseState
 {
     private CharacterStateMachine _character;
-    public CharacterAttackState(CharacterStateMachine characterStateMachine) : base(characterStateMachine)
+    public CharacterMoveState(CharacterStateMachine characterStateMachine) : base(characterStateMachine)
     {
         _character = characterStateMachine;
     }
