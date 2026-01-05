@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using UnityEngine;
 
-public class CharacterIdleState : State
+public class CharacterAttackState : CharacterBaseState
 {
     private CharacterStateMachine _character;
-    public CharacterIdleState(CharacterStateMachine characterStateMachine) : base(characterStateMachine)
+    public CharacterAttackState(CharacterStateMachine characterStateMachine) : base(characterStateMachine)
     {
         _character = characterStateMachine;
     }
@@ -13,8 +13,7 @@ public class CharacterIdleState : State
     {
         base.Enter();
         // TODO: Set idle animation
-        UnityEngine.Debug.Log("Idle");
-        _character.SetState(_character.ForwardWalkState);
+        UnityEngine.Debug.Log("Attack");
     }
 
     public override void Update()

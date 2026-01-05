@@ -796,8 +796,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a87dd35c72942c459eb52f80366776a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Commands: []
+  Commands:
+  - {fileID: 0}
   FacingDirection: 1
+  _inputHandler: {fileID: 0}
+  _sortedCommands: []
 --- !u!1 &1710205378
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   Priority: 10
   ClearsBuffer: 0
   BufferWindow: 6
-  Motion: 
+  Motion: 00000000
   Button: 100
   MotionWindow: 18
   ButtonWindow: 6
