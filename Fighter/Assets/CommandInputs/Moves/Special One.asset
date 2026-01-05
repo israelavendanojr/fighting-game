@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00d326ae944aef94cb8f1a188a335f43, type: 3}
-  m_Name: SpecialOne
+  m_Name: Special One
   m_EditorClassIdentifier: 
   commandInput: {fileID: 11400000, guid: e8aaf39be5daea440adf4ccfccd4bed9, type: 2}
   animationClip: {fileID: 0}

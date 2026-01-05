@@ -13,7 +13,7 @@ public class CharacterStandState : CharacterBaseState
     {
         base.Enter();
         // TODO: Set idle animation
-        UnityEngine.Debug.Log("Stand");
+        // UnityEngine.Debug.Log("Stand");
     }
 
     public override void Update()

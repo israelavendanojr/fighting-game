@@ -798,6 +798,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c83a79ba8bfa3e64b9e957701cf60aed, type: 2}
   - {fileID: 11400000, guid: 2e1a6dc1cc3fc094bacfe181b88a4c2b, type: 2}
   - {fileID: 11400000, guid: 56690c880fc861e448b5890098586508, type: 2}
+  _availableMovements:
+  - {fileID: 11400000, guid: 04eccb5451da93f4594d66046fdb50f1, type: 2}
+  - {fileID: 11400000, guid: 4d51d9df0a0e104428b0efe8f5b8c2ce, type: 2}
+  - {fileID: 11400000, guid: 0a1541d6eaaf3264f827462dbcfe83b1, type: 2}
+  - {fileID: 11400000, guid: ecfd134c127f3f94ebde635f557a311a, type: 2}
 --- !u!1 &1710205378
 GameObject:
   m_ObjectHideFlags: 0

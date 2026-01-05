@@ -39,7 +39,7 @@ public class CharacterMoveState : CharacterBaseState
         // Apply initial velocity
         // TODO: Apply _moveData.initialVelocity to character
         
-        UnityEngine.Debug.Log($"MOVE STATE: Executing move: {_moveData.name}");
+        UnityEngine.Debug.Log($"Executing move: {_moveData.name}");
     }
 
     public override void Update()

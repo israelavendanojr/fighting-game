@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00d326ae944aef94cb8f1a188a335f43, type: 3}
-  m_Name: StandLight
+  m_Name: Super One
   m_EditorClassIdentifier: 
-  commandInput: {fileID: 11400000, guid: 8c1e7e42c2617ed44bb14fcabf31b4c6, type: 2}
+  commandInput: {fileID: 11400000, guid: 3cf8105122d3eb446a64a4956fad31eb, type: 2}
   animationClip: {fileID: 0}
   attacks:
   - startup: 0
