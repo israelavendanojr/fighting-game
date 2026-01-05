@@ -192,27 +192,41 @@ public class MoveExecutor : MonoBehaviour
     private void ExecuteMove(CharacterMove move)
     {
         CharacterMoveState moveState = _stateMachine.MoveState;
+        
+        // Set the data BEFORE transitioning
         moveState.SetMoveData(move);
         
+        // Clear buffer if specified
         if (move.commandInput.clearsBufferOnSuccess)
         {
             _inputHandler.InputBuffer.Clear();
         }
         
-        _stateMachine.SetState(moveState);
+        // Only transition if we're not already in this state
+        if (_stateMachine.CurrentState != moveState)
+        {
+            _stateMachine.SetState(moveState);
+        }
     }
     
     private void ExecuteMovement(CharacterMovement movement)
     {
         CharacterMovementState movementState = GetMovementStateForMovement(movement);
+        
+        // Set the data BEFORE transitioning
         movementState.SetMovementData(movement);
         
+        // Clear buffer if specified
         if (movement.commandInput.clearsBufferOnSuccess)
         {
             _inputHandler.InputBuffer.Clear();
         }
         
-        _stateMachine.SetState(movementState);
+        // Only transition if we're not already in this state
+        if (_stateMachine.CurrentState != movementState)
+        {
+            _stateMachine.SetState(movementState);
+        }
     }
     
     private CharacterMovementState GetMovementStateForMovement(CharacterMovement movement)

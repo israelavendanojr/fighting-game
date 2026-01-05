@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Backward Dash
   m_EditorClassIdentifier: 
   commandInput: {fileID: 11400000, guid: bf427e4a167d1054e8fdfb4df854fd6d, type: 2}
-  speed: 10
+  speed: 20
   animationClip: {fileID: 0}
   affectedByGravity: 1
   friction: 0.9

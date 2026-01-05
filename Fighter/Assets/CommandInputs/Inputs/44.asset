@@ -18,6 +18,11 @@ MonoBehaviour:
       minimumHoldFrames: 1
     - input: 7
       minimumHoldFrames: 1
+  - steps:
+    - input: 7
+      minimumHoldFrames: 1
+    - input: 12
+      minimumHoldFrames: 1
   maxFrameWindow: 12
   clearsBufferOnSuccess: 0
   priority: -1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Forward Walk
   m_EditorClassIdentifier: 
   commandInput: {fileID: 11400000, guid: 85798182438b90146b27d8a1e164442d, type: 2}
-  speed: 5
+  speed: 6
   animationClip: {fileID: 0}
   affectedByGravity: 1
   friction: 0.9
