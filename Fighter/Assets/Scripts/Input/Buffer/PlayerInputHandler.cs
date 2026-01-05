@@ -76,7 +76,7 @@ public class PlayerInputHandler : MonoBehaviour
         BufferInput currentDirection = DetermineNumpadDirection(left, right, up, down);
         
         // Release all other directions
-        for (int i = 1; i <= 9; i++)
+        for (int i = 0; i <= 8; i++)
         {
             BufferInput dir = (BufferInput)i;
             if (dir != currentDirection && _inputBuffer.IsInputHeld(dir))

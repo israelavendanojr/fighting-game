@@ -780,10 +780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5fbd9a0f5276b40a0da19e69176de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backWalkData: {fileID: 0}
-  _forwardWalkData: {fileID: 11400000, guid: 1bfe4fb2304d3504e802d6c17b8502b9, type: 2}
-  _backDashData: {fileID: 0}
-  _forwardDashData: {fileID: 0}
 --- !u!114 &1367992954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,14 +789,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1367992946}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a87dd35c72942c459eb52f80366776a, type: 3}
+  m_Script: {fileID: 11500000, guid: 8354af80421a5fc46bff2eb123627778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Commands:
-  - {fileID: 0}
-  FacingDirection: 1
-  _inputHandler: {fileID: 0}
-  _sortedCommands: []
+  _stateMachine: {fileID: 1367992953}
+  _inputHandler: {fileID: 1367992951}
+  _availableMoves:
+  - {fileID: 11400000, guid: c83a79ba8bfa3e64b9e957701cf60aed, type: 2}
+  - {fileID: 11400000, guid: 2e1a6dc1cc3fc094bacfe181b88a4c2b, type: 2}
+  - {fileID: 11400000, guid: 56690c880fc861e448b5890098586508, type: 2}
 --- !u!1 &1710205378
 GameObject:
   m_ObjectHideFlags: 0

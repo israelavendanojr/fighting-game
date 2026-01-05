@@ -47,7 +47,6 @@ public class MoveExecutor : MonoBehaviour
         {
             if (CheckSequence(sequence, move.commandInput.maxFrameWindow))
             {
-                UnityEngine.Debug.Log("just did" + move);
                 return true;
             }
         }
@@ -94,7 +93,6 @@ public class MoveExecutor : MonoBehaviour
                         // Verify entire sequence is within frame window
                         if (currentFrame - firstInputFrame <= maxFrameWindow)
                         {
-                            UnityEngine.Debug.Log("Verified " + sequence + "in " + maxFrameWindow + "frames");
                             return true;
                         }
                     }
@@ -107,7 +105,7 @@ public class MoveExecutor : MonoBehaviour
     
     private void ExecuteMove(CharacterMove move)
     {
-        Debug.Log($"Executing move: {move.name}");
+        // Debug.Log($"Executing move: {move.name}");
         
         // Get the appropriate move state and set its data
         CharacterMoveState moveState = GetMoveStateForMove(move);
@@ -127,6 +125,6 @@ public class MoveExecutor : MonoBehaviour
     {
         // For now, just use a generic move state
         // Later you could have specific states for different move types
-        return _stateMachine.LightAttackState;
+        return _stateMachine.MoveState;
     }
 }
