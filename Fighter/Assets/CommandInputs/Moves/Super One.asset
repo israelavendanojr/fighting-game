@@ -18,7 +18,7 @@ MonoBehaviour:
   - startup: 10
     active: 5
     recovery: 3
-    hitStun: 0
+    hitStun: 10
     damage: 10
     knockback: {x: 5, y: 3}
     hitboxes:

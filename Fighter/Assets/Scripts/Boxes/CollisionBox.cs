@@ -14,12 +14,12 @@ public class CollisionBox : MonoBehaviour
     public Vector2 Knockback;
     public int HitStun;
     
-    private BoxCollider2D _collider;
+    private BoxCollider _collider;
     private CharacterStateMachine _owner;
     
     private void Awake()
     {
-        _collider = gameObject.AddComponent<BoxCollider2D>();
+        _collider = gameObject.AddComponent<BoxCollider>();
         _collider.isTrigger = true;
         _owner = GetComponentInParent<CharacterStateMachine>();
         UpdateCollider();
@@ -29,11 +29,11 @@ public class CollisionBox : MonoBehaviour
     {
         if (_collider == null) return;
         
-        _collider.offset = BoxRect.center;
-        _collider.size = BoxRect.size;
+        _collider.center = new Vector3(BoxRect.center.x, BoxRect.center.y, 0);
+        _collider.size = new Vector3(BoxRect.size.x, BoxRect.size.y, 0.1f);
     }
     
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         // Only process hitbox collisions
         if (Type != BoxType.Hitbox) return;
