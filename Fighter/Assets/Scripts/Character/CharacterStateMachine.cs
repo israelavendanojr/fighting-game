@@ -7,6 +7,7 @@ public class CharacterStateMachine : StateMachine
     // States
     public CharacterStandState StandState { get; private set; }
     public CharacterMoveState MoveState { get; private set; }
+    public CharacterHitstunState HitstunState { get; private set; }
     
     // Movement states
     public CharacterMovementState ForwardWalkState { get; private set; }
@@ -22,6 +23,7 @@ public class CharacterStateMachine : StateMachine
         // Initialize all states
         StandState = new CharacterStandState(this);
         MoveState = new CharacterMoveState(this);
+        HitstunState = new CharacterHitstunState(this);
         
         // Initialize movement states
         ForwardWalkState = new CharacterMovementState(this);

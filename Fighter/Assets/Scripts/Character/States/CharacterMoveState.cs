@@ -133,7 +133,8 @@ public class CharacterMoveState : CharacterBaseState
                 hitboxData.offset,
                 hitboxData.size,
                 attack.damage,
-                attack.knockback
+                attack.knockback,
+                attack.hitStun
             );
         }
     }

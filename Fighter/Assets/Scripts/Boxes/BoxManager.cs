@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BoxManager : MonoBehaviour
 {
     private List<CollisionBox> _activeBoxes = new List<CollisionBox>();
     private CharacterStateMachine _stateMachine;
+    
+    // Event for when a new attack starts (to clear hit tracking)
+    public event Action OnNewAttackStarted;
     
     // For rendering boxes in game view
     [SerializeField] private bool _showBoxes = true;
@@ -21,18 +25,19 @@ public class BoxManager : MonoBehaviour
         }
     }
     
-    public CollisionBox CreateHitbox(Vector2 offset, Vector2 size, int damage, Vector2 knockback)
+    public CollisionBox CreateHitbox(Vector2 offset, Vector2 size, int damage, Vector2 knockback, int hitStun)
     {
         GameObject boxObj = new GameObject("Hitbox");
         boxObj.transform.SetParent(transform);
         boxObj.transform.localPosition = Vector3.zero;
-        boxObj.layer = LayerMask.NameToLayer("Hitbox"); // Make sure you create these layers!
+        boxObj.layer = LayerMask.NameToLayer("Default"); // Unity 2D physics uses layers differently
         
         CollisionBox box = boxObj.AddComponent<CollisionBox>();
         box.Type = BoxType.Hitbox;
         box.BoxRect = new Rect(offset, size);
         box.Damage = damage;
         box.Knockback = knockback;
+        box.HitStun = hitStun;
         
         _activeBoxes.Add(box);
         return box;
@@ -43,7 +48,7 @@ public class BoxManager : MonoBehaviour
         GameObject boxObj = new GameObject("Hurtbox");
         boxObj.transform.SetParent(transform);
         boxObj.transform.localPosition = Vector3.zero;
-        boxObj.layer = LayerMask.NameToLayer("Hurtbox");
+        boxObj.layer = LayerMask.NameToLayer("Default");
         
         CollisionBox box = boxObj.AddComponent<CollisionBox>();
         box.Type = BoxType.Hurtbox;
@@ -61,6 +66,9 @@ public class BoxManager : MonoBehaviour
                 Destroy(box.gameObject);
         }
         _activeBoxes.Clear();
+        
+        // Notify that a new attack is starting
+        OnNewAttackStarted?.Invoke();
     }
     
     public void ClearHitboxes()
