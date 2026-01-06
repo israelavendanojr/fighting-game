@@ -10,10 +10,7 @@ public class CharacterStateMachine : StateMachine
     public CharacterHitstunState HitstunState { get; private set; }
     
     // Movement states
-    public CharacterMovementState ForwardWalkState { get; private set; }
-    public CharacterMovementState BackWalkState { get; private set; }
-    public CharacterMovementState ForwardDashState { get; private set; }
-    public CharacterMovementState BackDashState { get; private set; }
+    public CharacterMovementState WalkState { get; private set; }
     
     // Expose current state for move checking
     public State CurrentState => _currentState;
@@ -24,12 +21,7 @@ public class CharacterStateMachine : StateMachine
         StandState = new CharacterStandState(this);
         MoveState = new CharacterMoveState(this);
         HitstunState = new CharacterHitstunState(this);
-        
-        // Initialize movement states
-        ForwardWalkState = new CharacterMovementState(this);
-        BackWalkState = new CharacterMovementState(this);
-        ForwardDashState = new CharacterMovementState(this);
-        BackDashState = new CharacterMovementState(this);
+        WalkState = new CharacterMovementState(this);
     }
 
     public override State InitialState() => StandState;

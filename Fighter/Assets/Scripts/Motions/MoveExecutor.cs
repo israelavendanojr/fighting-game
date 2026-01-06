@@ -14,26 +14,26 @@ public class MoveExecutor : MonoBehaviour
     
     private void Update()
     {
-        // Check what state we're in and what transitions are allowed
+        // 1. Check what state we're in and what transitions are allowed
         bool canCheckAttacks = CanCheckAttacks();
         bool canCheckMovement = CanCheckMovement();
         
-        // Try attacks first (they usually have priority)
+        // 2. Try attacks first (highest priority)
         if (canCheckAttacks)
         {
             if (TryExecuteMove())
                 return;
         }
         
-        // Then try movement
+        // 3. Then try movement
         if (canCheckMovement)
         {
             if (TryExecuteMovement())
                 return;
         }
         
-        // If no movement input and we're in a movement state, return to stand
-        if (_stateMachine.CurrentState is CharacterMovementState)
+        // 4. If no movement input and we're in the walk state, return to stand
+        if (_stateMachine.CurrentState == _stateMachine.WalkState)
         {
             if (!HasMovementInput())
             {
@@ -44,7 +44,7 @@ public class MoveExecutor : MonoBehaviour
     
     private bool CanCheckAttacks()
     {
-        // Can always check from stand state
+        // Always allowed from stand
         if (_stateMachine.CurrentState == _stateMachine.StandState)
             return true;
         
@@ -57,7 +57,7 @@ public class MoveExecutor : MonoBehaviour
     
     private bool CanCheckMovement()
     {
-        // Can always check from stand state
+        // Always allowed from stand
         if (_stateMachine.CurrentState == _stateMachine.StandState)
             return true;
         
@@ -72,7 +72,8 @@ public class MoveExecutor : MonoBehaviour
     {
         if (_inputHandler == null) return false;
         Vector2 moveInput = _inputHandler.GetMoveInput();
-        return Mathf.Abs(moveInput.x) > 0.1f || Mathf.Abs(moveInput.y) > 0.1f;
+        // Return true if there is significant horizontal input
+        return Mathf.Abs(moveInput.x) > 0.1f;
     }
     
     private bool TryExecuteMove()
@@ -80,7 +81,7 @@ public class MoveExecutor : MonoBehaviour
         if (_inputHandler == null || _inputHandler.InputBuffer == null)
             return false;
         
-        // Sort moves by priority (higher priority first)
+        // Sort moves by priority
         _availableMoves.Sort((a, b) => b.commandInput.priority.CompareTo(a.commandInput.priority));
         
         foreach (var move in _availableMoves)
@@ -100,7 +101,7 @@ public class MoveExecutor : MonoBehaviour
         if (_inputHandler == null || _inputHandler.InputBuffer == null)
             return false;
         
-        // Sort movements by priority (higher priority first)
+        // Sort movements by priority
         _availableMovements.Sort((a, b) => b.commandInput.priority.CompareTo(a.commandInput.priority));
         
         foreach (var movement in _availableMovements)
@@ -123,11 +124,8 @@ public class MoveExecutor : MonoBehaviour
         foreach (var sequence in move.commandInput.inputSequences)
         {
             if (CheckSequence(sequence, move.commandInput.maxFrameWindow))
-            {
                 return true;
-            }
         }
-        
         return false;
     }
     
@@ -139,11 +137,8 @@ public class MoveExecutor : MonoBehaviour
         foreach (var sequence in movement.commandInput.inputSequences)
         {
             if (CheckSequence(sequence, movement.commandInput.maxFrameWindow))
-            {
                 return true;
-            }
         }
-        
         return false;
     }
     
@@ -156,6 +151,7 @@ public class MoveExecutor : MonoBehaviour
         int sequenceIndex = 0;
         int firstInputFrame = -1;
         
+        // Iterates through input history to match the motion sequence
         for (int i = 0; i < history.Count; i++)
         {
             var inputEvent = history[i];
@@ -178,14 +174,11 @@ public class MoveExecutor : MonoBehaviour
                     if (sequenceIndex >= sequence.steps.Length)
                     {
                         if (currentFrame - firstInputFrame <= maxFrameWindow)
-                        {
                             return true;
-                        }
                     }
                 }
             }
         }
-        
         return false;
     }
     
@@ -193,59 +186,28 @@ public class MoveExecutor : MonoBehaviour
     {
         CharacterMoveState moveState = _stateMachine.MoveState;
         
-        // Set the data BEFORE transitioning
+        // Inject data before transition
         moveState.SetMoveData(move);
         
-        // Clear buffer if specified
         if (move.commandInput.clearsBufferOnSuccess)
-        {
             _inputHandler.InputBuffer.Clear();
-        }
         
-        // Only transition if we're not already in this state
         if (_stateMachine.CurrentState != moveState)
-        {
             _stateMachine.SetState(moveState);
-        }
     }
     
     private void ExecuteMovement(CharacterMovement movement)
     {
-        CharacterMovementState movementState = GetMovementStateForMovement(movement);
+        // Routes all walking data (forward/back) to the same WalkState
+        CharacterMovementState walkState = _stateMachine.WalkState;
         
-        // Set the data BEFORE transitioning
-        movementState.SetMovementData(movement);
+        // Update the state with the specific movement SO (Speed, Friction, etc.)
+        walkState.SetMovementData(movement);
         
-        // Clear buffer if specified
         if (movement.commandInput.clearsBufferOnSuccess)
-        {
             _inputHandler.InputBuffer.Clear();
-        }
         
-        // Only transition if we're not already in this state
-        if (_stateMachine.CurrentState != movementState)
-        {
-            _stateMachine.SetState(movementState);
-        }
-    }
-    
-    private CharacterMovementState GetMovementStateForMovement(CharacterMovement movement)
-    {
-        // Match the movement to the appropriate state
-        // You could make this more sophisticated by adding an identifier to CharacterMovement
-        if (movement.name.Contains("Forward") || movement.name.Contains("forward"))
-        {
-            if (movement.name.Contains("Dash") || movement.name.Contains("dash"))
-                return _stateMachine.ForwardDashState;
-            return _stateMachine.ForwardWalkState;
-        }
-        else if (movement.name.Contains("Back") || movement.name.Contains("back"))
-        {
-            if (movement.name.Contains("Dash") || movement.name.Contains("dash"))
-                return _stateMachine.BackDashState;
-            return _stateMachine.BackWalkState;
-        }
-        
-        return _stateMachine.ForwardWalkState; // Default
+        if (_stateMachine.CurrentState != walkState)
+            _stateMachine.SetState(walkState);
     }
 }

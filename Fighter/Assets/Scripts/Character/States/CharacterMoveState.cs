@@ -48,7 +48,7 @@ public class CharacterMoveState : CharacterBaseState
         // Clear any existing boxes
         _boxManager.ClearAllBoxes();
         
-        UnityEngine.Debug.Log($"Executing move: {_moveData.name}");
+        // UnityEngine.Debug.Log($"Executing move: {_moveData.name}");
     }
 
     public override void Update()
