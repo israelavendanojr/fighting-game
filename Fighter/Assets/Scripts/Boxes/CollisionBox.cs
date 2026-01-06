@@ -23,6 +23,9 @@ public class CollisionBox : MonoBehaviour
         _collider.isTrigger = true;
         _owner = GetComponentInParent<CharacterStateMachine>();
         UpdateCollider();
+        
+        // IMPORTANT: Set the layer so we can detect collisions
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
     
     public void UpdateCollider()
@@ -35,20 +38,48 @@ public class CollisionBox : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        // Debug collision detection
+        Debug.Log($"[{Type}] Collision detected with: {other.gameObject.name}");
+        
         // Only process hitbox collisions
         if (Type != BoxType.Hitbox) return;
         
         CollisionBox otherBox = other.GetComponent<CollisionBox>();
-        if (otherBox == null || otherBox.Type != BoxType.Hurtbox) return;
+        if (otherBox == null)
+        {
+            Debug.Log($"No CollisionBox component on {other.gameObject.name}");
+            return;
+        }
+        
+        if (otherBox.Type != BoxType.Hurtbox)
+        {
+            Debug.Log($"Other box is not a hurtbox, it's a {otherBox.Type}");
+            return;
+        }
         
         // Don't hit yourself
         CharacterStateMachine otherOwner = otherBox.GetComponentInParent<CharacterStateMachine>();
-        if (otherOwner == null || otherOwner == _owner) return;
+        if (otherOwner == null)
+        {
+            Debug.Log("No CharacterStateMachine found on other collider's parent");
+            return;
+        }
         
-        // Don't hit opponents already in hitstun (optional - remove for juggle combos)
-        if (otherOwner.CurrentState is CharacterHitstunState) return;
+        if (otherOwner == _owner)
+        {
+            Debug.Log("Ignoring self-hit");
+            return;
+        }
+        
+        // Check if already in hitstun (optional - remove this check if you want juggle combos)
+        if (otherOwner.CurrentState is CharacterHitstunState)
+        {
+            Debug.Log("Target already in hitstun");
+            return;
+        }
         
         // Apply the hit
+        Debug.Log($"✓ HIT CONFIRMED! Applying {Damage} damage, {HitStun}f hitstun");
         ApplyHit(otherOwner);
     }
     
@@ -70,7 +101,7 @@ public class CollisionBox : MonoBehaviour
         hitstunState.SetHitstunData(HitStun, adjustedKnockback, Damage);
         opponent.SetState(hitstunState);
         
-        Debug.Log($"Hit! Damage: {Damage}, Knockback: {adjustedKnockback}, Hitstun: {HitStun}f");
+        Debug.Log($"✓ HIT APPLIED! Damage: {Damage}, Knockback: {adjustedKnockback}, Hitstun: {HitStun}f");
     }
     
     private void OnDrawGizmos()

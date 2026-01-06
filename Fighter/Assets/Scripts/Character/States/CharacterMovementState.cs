@@ -26,7 +26,7 @@ public class CharacterMovementState : CharacterBaseState
             return;
         }
         
-        UnityEngine.Debug.Log($"MOVEMENT STATE: Executing movement: {_movementData.name}");
+        // UnityEngine.Debug.Log($"MOVEMENT STATE: Executing movement: {_movementData.name}");
         
         // TODO: Play animation if available
         // if (_movementData.animationClip != null)
